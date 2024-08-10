@@ -1,0 +1,31 @@
+@import "../../assets/variables.scss";
+
+.TicketList {
+  &-item {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  &-button {
+    cursor: pointer;
+    width: 502px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+
+    color: $primary-font;
+    background-color: $primary-button;
+    border: 1px solid $primary-button;
+    border-radius: 6px;
+
+    text-transform: uppercase;
+
+    font-size: 12px;
+
+    margin-bottom: 50px;
+  }
+
+  &-button:hover {
+    background-color: #3da2f5;
+    border-color: #3da2f5;
+  }
+}

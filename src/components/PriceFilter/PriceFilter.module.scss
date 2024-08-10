@@ -1,0 +1,48 @@
+@import "../../assets/variables.scss";
+
+.PriceFilter {
+  display: flex;
+
+  &-button {
+    cursor: pointer;
+    min-width: 168px;
+    min-height: 50px;
+
+    background-color: $default-button;
+
+    border: 1px solid #dfe5ec;
+
+    padding: 15px;
+
+    font-size: 12px;
+
+    text-transform: uppercase;
+
+    font-weight: 500;
+  }
+
+  &-button:hover {
+    background-color: $hover;
+  }
+
+  &-half-rounded-first {
+    border-radius: 7px 0 0 7px;
+    border-right: none;
+  }
+
+  &-half-rounded-last {
+    border-radius: 0 7px 7px 0;
+    border-left: none;
+  }
+
+  &-selected {
+    background-color: $primary-button;
+    color: $primary-font;
+
+    border-color: $primary-button;
+  }
+
+  &-selected:hover {
+    background-color: $primary-button;
+  }
+}

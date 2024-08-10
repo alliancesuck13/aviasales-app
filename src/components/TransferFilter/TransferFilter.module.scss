@@ -1,0 +1,60 @@
+@import "../../assets/variables.scss";
+
+.TransferFilter {
+  width: 232px;
+  height: 252px;
+
+  padding-bottom: 10px;
+
+  text-align: start;
+
+  background-color: #ffffff;
+
+  border-radius: 6px;
+  box-shadow: 0 2px 8px 0 rgba($color: #000000, $alpha: 0.1);
+
+  &-header {
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 600;
+
+    padding: 20px;
+
+    padding-bottom: 10px;
+
+    margin-top: 0;
+  }
+
+  &-label {
+    display: flex;
+
+    align-items: center;
+
+    font-size: 13px;
+
+    padding: 10px 20px;
+
+    cursor: pointer;
+  }
+
+  &-label:hover {
+    background-color: $hover;
+  }
+
+  &-checkbox {
+    border-color: #9abbce;
+
+    cursor: pointer;
+
+    margin-right: 10px;
+
+    width: 20px;
+    height: 20px;
+
+    transform: translateY(-2px);
+  }
+
+  &-checkbox:checked {
+    border-color: #2196f3;
+  }
+}

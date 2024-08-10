@@ -1,0 +1,20 @@
+@import "./assets/normalize.scss/_normalize.scss";
+@import "./assets/variables.scss";
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+
+body {
+  background-color: #f3f7fa;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  color: $default-font;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}

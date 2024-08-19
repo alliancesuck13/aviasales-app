@@ -1,34 +1,52 @@
+import { useSelector } from "react-redux";
+
 import Ticket from "../Ticket";
+import ProblemMessage from "../ProblemMessage";
+import generateUniqueID from "../../utils/generateUniqueID";
 
 import styles from "./TicketList.module.scss";
 
 export default function TicketList() {
-  const array = [1, 2, 3, 4, 5];
+  const ticketList = useSelector((state) => {
+    return state.filtredTicketList;
+  });
 
-  // const tickets = array.map((ticket) => {})
+  const hasConnectionError = useSelector((state) => {
+    return state.hasError;
+  });
+
+  const tickets = ticketList.map((ticket) => {
+    const firstSegment = ticket.segments[0];
+    const secondsSegment = ticket.segments[1];
+
+    return (
+      <li key={generateUniqueID()} className={styles["TicketList-item"]}>
+        <Ticket
+          price={ticket.price}
+          firstSegment={firstSegment}
+          secondSegment={secondsSegment}
+          carrier={ticket.carrier}
+        />
+      </li>
+    );
+  });
+
+  const errorMessage = hasConnectionError ? (
+    <ProblemMessage type="connection" message="Ошибка при получении данных от сервера" />
+  ) : (
+    <ProblemMessage message="Подходящих билетов не найдено" />
+  );
 
   return (
     <>
-      <ul>
-        <li className={styles["TicketList-item"]}>
-          <Ticket />
-        </li>
-        <li className={styles["TicketList-item"]}>
-          <Ticket />
-        </li>
-        <li className={styles["TicketList-item"]}>
-          <Ticket />
-        </li>
-        <li className={styles["TicketList-item"]}>
-          <Ticket />
-        </li>
-        <li className={styles["TicketList-item"]}>
-          <Ticket />
-        </li>
-      </ul>
-      <button className={styles["TicketList-button"]} type="button">
-        Показать еще 5 билетов
-      </button>
+      <ul>{tickets}</ul>
+      {ticketList.length ? (
+        <button className={styles["TicketList-button"]} type="button">
+          Показать еще 5 билетов
+        </button>
+      ) : (
+        errorMessage
+      )}
     </>
   );
 }

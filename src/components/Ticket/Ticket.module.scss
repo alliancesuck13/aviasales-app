@@ -6,7 +6,6 @@
   border-radius: 6px;
 
   width: 462px;
-  min-height: 184px;
   padding: 20px;
   background-color: #ffffff;
   box-shadow: 0 2px 8px 0 rgba($color: #000000, $alpha: 0.1);
@@ -14,15 +13,18 @@
   &-img-wrapper {
     position: absolute;
     top: 20px;
-    right: 20px;
+    right: 93px;
   }
 
   &-info {
-    display: inline-block;
+    display: block;
     margin-top: 56px;
-    text-align: center;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  &-table {
+    display: block;
   }
 
   &-price {
@@ -35,4 +37,53 @@
 
     font-weight: 500;
   }
+}
+
+table:last-child {
+  margin-top: 27px;
+  margin-bottom: 36px;
+}
+
+thead {
+  display: block;
+}
+
+tbody {
+  display: block;
+}
+
+thead tr {
+  display: flex;
+  justify-content: space-around;
+  font-size: 12px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #a0b0b9;
+  position: relative;
+  transform: translateX(-45px);
+}
+
+tr {
+  display: flex;
+  position: relative;
+  text-align: start;
+}
+
+td {
+  display: block;
+  font-size: 14px;
+}
+
+td:nth-child(1) {
+  position: absolute;
+}
+
+td:nth-child(2) {
+  position: absolute;
+  transform: translateX(154px);
+}
+
+td:nth-child(3) {
+  position: absolute;
+  transform: translateX(289px);
 }

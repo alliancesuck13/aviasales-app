@@ -42,19 +42,20 @@
   }
 
   &-checkbox {
-    border-color: #9abbce;
-
     cursor: pointer;
 
     margin-right: 10px;
 
     width: 20px;
     height: 20px;
-
-    transform: translateY(-2px);
+    border: 1px solid #9abbce;
   }
 
   &-checkbox:checked {
     border-color: #2196f3;
+  }
+
+  &-checkbox:not(:checked) {
+    border-color: #9abbce;
   }
 }

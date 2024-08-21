@@ -5,11 +5,16 @@ import TicketList from "../components/TicketList";
 import PriceFilter from "../components/PriceFilter";
 import TransferFilter from "../components/TransferFilter";
 
+import {
+  loadSearchID,
+  loadTickets,
+  loadFiltredTickets,
+  catchError,
+} from "./redux/actions";
 import styles from "./App.module.scss";
 
-const service = new AviasalesService();
-
 export default function App() {
+  const service = new AviasalesService();
   const dispatch = useDispatch();
 
   window.onload = () => {
@@ -25,22 +30,22 @@ export default function App() {
 
             const filtredTickets = ticketList.slice(0, 5);
 
-            dispatch({ type: "LOAD_TICKETS", payload: { ticketList } });
-            dispatch({ type: "LOAD_FILTRED_TICKETS", payload: { filtredTickets } });
+            dispatch(loadTickets(ticketList));
+            dispatch(loadFiltredTickets(filtredTickets));
             return ticketList;
           })
           .catch(() => {
             const hasError = true;
-            dispatch({ type: "GET_ERROR", payload: { hasError } });
+            dispatch(catchError(hasError));
             return hasError;
           });
 
-        dispatch({ type: "LOAD_SEARCH_ID", payload: { searchID } });
+        dispatch(loadSearchID(searchID));
         return searchID;
       })
       .catch(() => {
         const hasError = true;
-        dispatch({ type: "GET_ERROR", payload: { hasError } });
+        dispatch(catchError(hasError));
         return hasError;
       });
   };

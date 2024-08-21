@@ -8,11 +8,11 @@ import styles from "./TicketList.module.scss";
 
 export default function TicketList() {
   const ticketList = useSelector((state) => {
-    return state.filtredTicketList;
+    return state.loadReducer.filtredTicketList;
   });
 
   const hasConnectionError = useSelector((state) => {
-    return state.hasError;
+    return state.loadReducer.hasError;
   });
 
   const tickets = ticketList.map((ticket) => {

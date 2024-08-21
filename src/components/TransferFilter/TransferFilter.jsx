@@ -1,33 +1,35 @@
 import { useDispatch, useSelector } from "react-redux";
 
+import { filterAll, filterTransfers } from "../../App/redux/actions";
+
 import styles from "./TransferFilter.module.scss";
 
 export default function TransferFilter() {
   const filterIsAll = useSelector((state) => {
-    return state.filterIsAll;
+    return state.filterReducer.filterIsAll;
   });
   const filterIsNoTransfers = useSelector((state) => {
-    return state.filterIsNoTransfers;
+    return state.filterReducer.filterIsNoTransfers;
   });
   const filterIsOneTransfer = useSelector((state) => {
-    return state.filterIsOneTransfer;
+    return state.filterReducer.filterIsOneTransfer;
   });
   const filterIsTwoTransfers = useSelector((state) => {
-    return state.filterIsTwoTransfers;
+    return state.filterReducer.filterIsTwoTransfers;
   });
   const filterIsThreeTransfers = useSelector((state) => {
-    return state.filterIsThreeTransfers;
+    return state.filterReducer.filterIsThreeTransfers;
   });
 
   const dispatch = useDispatch();
 
   const onChangeAll = () => {
-    dispatch({ type: "FILTER_ALL" });
+    dispatch(filterAll());
   };
 
   const onChangeTransfers = (e) => {
     const checkboxID = e.target.id;
-    dispatch({ type: "FILTER_TRANSFER", payload: { [checkboxID]: e.target.checked } });
+    dispatch(filterTransfers(checkboxID, e));
   };
 
   return (

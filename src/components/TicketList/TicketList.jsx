@@ -1,19 +1,68 @@
-import { useSelector } from "react-redux";
+/* eslint-disable indent */
+import { useDispatch, useSelector } from "react-redux";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ThreeDots } from "react-loader-spinner";
 
+import Error from "../Error";
 import Ticket from "../Ticket";
-import ProblemMessage from "../ProblemMessage";
 import generateUniqueID from "../../utils/generateUniqueID";
+import { loadMoreTickets } from "../../App/redux/actions";
 
 import styles from "./TicketList.module.scss";
 
 export default function TicketList() {
-  const ticketList = useSelector((state) => {
+  const allTickets = useSelector((state) => {
+    return state.loadReducer.ticketList;
+  });
+
+  let ticketList = useSelector((state) => {
     return state.loadReducer.filtredTicketList;
+  });
+
+  const isLoading = useSelector((state) => {
+    return state.loadReducer.isLoading;
   });
 
   const hasConnectionError = useSelector((state) => {
     return state.loadReducer.hasError;
   });
+
+  const priceFilter = useSelector((state) => {
+    return state.filterReducer.priceFilter;
+  });
+
+  const dispatch = useDispatch();
+
+  switch (priceFilter) {
+    case "CHEAP":
+      ticketList = ticketList.sort((a, b) => a.price - b.price);
+
+      break;
+
+    case "FAST":
+      ticketList = ticketList.sort(
+        (a, b) => a.segments[0].duration - b.segments[0].duration
+      );
+      ticketList = ticketList.sort(
+        (a, b) => a.segments[1].duration - b.segments[1].duration
+      );
+
+      break;
+
+    case "OPTIMAL":
+      ticketList = ticketList.sort((a, b) => a.price - b.price);
+      ticketList = ticketList.sort(
+        (a, b) => a.segments[0].duration - b.segments[0].duration
+      );
+      ticketList = ticketList.sort(
+        (a, b) => a.segments[1].duration - b.segments[1].duration
+      );
+
+      break;
+
+    default:
+      break;
+  }
 
   const tickets = ticketList.map((ticket) => {
     const firstSegment = ticket.segments[0];
@@ -31,22 +80,40 @@ export default function TicketList() {
     );
   });
 
-  const errorMessage = hasConnectionError ? (
-    <ProblemMessage type="connection" message="Ошибка при получении данных от сервера" />
+  const loadTickets = () => {
+    const indexOfLastTicket = ticketList.length;
+    let updatedTickets = allTickets.slice(indexOfLastTicket, indexOfLastTicket + 5);
+    updatedTickets = [...ticketList, ...updatedTickets];
+
+    dispatch(loadMoreTickets(updatedTickets));
+  };
+
+  const loading = isLoading ? (
+    <ThreeDots
+      visible
+      height="70"
+      width="70"
+      color="#2196f3"
+      radius="1"
+      ariaLabel="three-dots-loading"
+      wrapperStyle={{
+        display: "inline-block",
+        marginLeft: "auto",
+        marginRight: "auto",
+      }}
+    />
   ) : (
-    <ProblemMessage message="Подходящих билетов не найдено" />
+    <Error hasConnectionError={hasConnectionError} ticketList={tickets}>
+      <button className={styles["TicketList-button"]} type="button" onClick={loadTickets}>
+        Показать еще 5 билетов
+      </button>
+    </Error>
   );
 
   return (
     <>
       <ul>{tickets}</ul>
-      {ticketList.length ? (
-        <button className={styles["TicketList-button"]} type="button">
-          Показать еще 5 билетов
-        </button>
-      ) : (
-        errorMessage
-      )}
+      {loading}
     </>
   );
 }

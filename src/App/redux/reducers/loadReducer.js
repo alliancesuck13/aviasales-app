@@ -1,11 +1,13 @@
+/* eslint-disable indent */
 import {
   LOAD_SEARCH_ID,
   LOAD_TICKETS,
   LOAD_FILTRED_TICKETS,
   GET_ERROR,
+  LOAD_MORE_TICKETS,
+  SET_LOADING,
 } from "../actions";
 
-/* eslint-disable indent */
 const initialState = {
   searchID: "",
   ticketList: [],
@@ -24,6 +26,12 @@ export default function loadReducer(state = initialState, action = undefined) {
 
     case LOAD_FILTRED_TICKETS: // отображение только 5 отфильтрованных тикетов
       return { ...state, filtredTicketList: action.payload.filtredTickets };
+
+    case LOAD_MORE_TICKETS:
+      return { ...state, filtredTicketList: action.payload.updatedTickets };
+
+    case SET_LOADING:
+      return { ...state, isLoading: action.payload.isLoading };
 
     case GET_ERROR: // ошибка загрузки
       return { ...state, hasError: action.payload.hasError };

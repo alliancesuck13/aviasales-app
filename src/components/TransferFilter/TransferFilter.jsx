@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import { filterAll, filterTransfers } from "../../App/redux/actions";
+import { filterAll, filterTransfers, loadFiltredTickets } from "../../App/redux/actions";
 
 import styles from "./TransferFilter.module.scss";
 
@@ -8,23 +8,37 @@ export default function TransferFilter() {
   const filterIsAll = useSelector((state) => {
     return state.filterReducer.filterIsAll;
   });
+
   const filterIsNoTransfers = useSelector((state) => {
     return state.filterReducer.filterIsNoTransfers;
   });
+
   const filterIsOneTransfer = useSelector((state) => {
     return state.filterReducer.filterIsOneTransfer;
   });
+
   const filterIsTwoTransfers = useSelector((state) => {
     return state.filterReducer.filterIsTwoTransfers;
   });
+
   const filterIsThreeTransfers = useSelector((state) => {
     return state.filterReducer.filterIsThreeTransfers;
+  });
+
+  const ticketList = useSelector((state) => {
+    return state.loadReducer.ticketList;
   });
 
   const dispatch = useDispatch();
 
   const onChangeAll = () => {
     dispatch(filterAll());
+    if (filterIsAll) {
+      dispatch(loadFiltredTickets());
+    } else {
+      const filtredTickets = ticketList.slice(0, 5);
+      dispatch(loadFiltredTickets(filtredTickets));
+    }
   };
 
   const onChangeTransfers = (e) => {

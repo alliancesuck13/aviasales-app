@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+
 import {
   FILTER_ALL,
   FILTER_TRANSFER,
@@ -5,9 +7,11 @@ import {
   ONE_TRANSFER,
   TWO_TRANSFERS,
   THREE_TRANSFERS,
+  FILTER_CHEAPEST,
+  FILTER_FASTEST,
+  FILTER_OPTIMAL,
 } from "../actions";
 
-/* eslint-disable indent */
 const initialState = {
   filterIsAll: true,
   filterIsNoTransfers: true,
@@ -112,6 +116,24 @@ export default function filterReducer(state = initialState, action = undefined) 
         default:
           return { ...state };
       }
+
+    case FILTER_CHEAPEST:
+      return {
+        ...state,
+        priceFilter: "CHEAP",
+      };
+
+    case FILTER_FASTEST:
+      return {
+        ...state,
+        priceFilter: "FAST",
+      };
+
+    case FILTER_OPTIMAL:
+      return {
+        ...state,
+        priceFilter: "OPTIMAL",
+      };
 
     default:
       return state;

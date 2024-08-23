@@ -1,5 +1,6 @@
 export const LOAD_SEARCH_ID = "LOAD_SEARCH_ID";
 export const LOAD_TICKETS = "LOAD_TICKETS";
+export const LOAD_ORIGIN_TICKETS = "LOAD_ORIGIN_TICKETS";
 export const LOAD_FILTRED_TICKETS = "LOAD_FILTRED_TICKETS";
 export const LOAD_MORE_TICKETS = "LOAD_MORE_TICKETS";
 export const SET_LOADING = "SET_LOADING";
@@ -22,6 +23,10 @@ export function loadSearchID(searchID = "") {
 
 export function loadTickets(ticketList = []) {
   return { type: LOAD_TICKETS, payload: { ticketList } };
+}
+
+export function loadOriginTickets(originTickets = []) {
+  return { type: LOAD_ORIGIN_TICKETS, payload: { originTickets } };
 }
 
 export function loadFiltredTickets(filtredTickets = []) {

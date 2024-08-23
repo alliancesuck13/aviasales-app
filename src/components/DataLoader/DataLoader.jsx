@@ -4,6 +4,7 @@ import AviasalesService from "../../services/AviasalesService";
 import {
   loadSearchID,
   loadTickets,
+  loadOriginTickets,
   loadFiltredTickets,
   setLoading,
   catchError,
@@ -23,12 +24,13 @@ export default function DataLoader() {
         service
           .getTickets(searchID)
           .then((tickets) => {
-            const ticketList = tickets;
+            const originTickets = tickets;
 
-            const filtredTickets = ticketList.slice(0, 5);
+            const ticketList = originTickets.slice(0, 5);
 
             dispatch(loadTickets(ticketList));
-            dispatch(loadFiltredTickets(filtredTickets));
+            dispatch(loadOriginTickets(originTickets));
+            dispatch(loadFiltredTickets(originTickets));
             dispatch(setLoading(false));
             return ticketList;
           })

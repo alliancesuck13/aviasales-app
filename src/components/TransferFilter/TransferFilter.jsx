@@ -1,6 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import { filterAll, filterTransfers, loadFiltredTickets } from "../../App/redux/actions";
+import {
+  filterAll,
+  filterTransfers,
+  loadFiltredTickets,
+  loadTickets,
+} from "../../App/redux/actions";
 
 import styles from "./TransferFilter.module.scss";
 
@@ -25,8 +30,12 @@ export default function TransferFilter() {
     return state.filterReducer.filterIsThreeTransfers;
   });
 
-  const ticketList = useSelector((state) => {
-    return state.loadReducer.ticketList;
+  const originTicketList = useSelector((state) => {
+    return state.loadReducer.originTicketList;
+  });
+
+  const filtredTicketList = useSelector((state) => {
+    return state.loadReducer.filtredTicketList;
   });
 
   const dispatch = useDispatch();
@@ -34,15 +43,180 @@ export default function TransferFilter() {
   const onChangeAll = () => {
     dispatch(filterAll());
     if (filterIsAll) {
-      dispatch(loadFiltredTickets());
+      dispatch(loadTickets());
     } else {
-      const filtredTickets = ticketList.slice(0, 5);
+      const ticketList = originTicketList.slice(0, 5);
+      dispatch(loadFiltredTickets(originTicketList));
+      dispatch(loadTickets(ticketList));
+    }
+  };
+
+  const onChangeZero = () => {
+    if (
+      !filterIsAll &&
+      !filterIsOneTransfer &&
+      !filterIsTwoTransfers &&
+      !filterIsThreeTransfers
+    ) {
+      dispatch(loadTickets());
+    }
+
+    if (
+      !filterIsAll &&
+      !filterIsOneTransfer &&
+      !filterIsTwoTransfers &&
+      !filterIsThreeTransfers &&
+      !filterIsNoTransfers
+    ) {
+      const filtredTickets = filtredTicketList.filter(
+        (ticket) =>
+          ticket.segments[0].stops.length && ticket.segments[1].stops.length === 0
+      );
+
+      const ticketList = filtredTickets.slice(0, 5);
+
       dispatch(loadFiltredTickets(filtredTickets));
+      dispatch(loadTickets(ticketList));
+    }
+
+    if (
+      !filterIsAll &&
+      filterIsOneTransfer &&
+      filterIsTwoTransfers &&
+      filterIsThreeTransfers
+    ) {
+      const ticketList = originTicketList.slice(0, 5);
+      dispatch(loadFiltredTickets(originTicketList));
+      dispatch(loadTickets(ticketList));
+    }
+  };
+
+  const onChangeOne = () => {
+    if (
+      !filterIsAll &&
+      !filterIsNoTransfers &&
+      !filterIsTwoTransfers &&
+      !filterIsThreeTransfers
+    ) {
+      dispatch(loadTickets());
+      dispatch(loadFiltredTickets(originTicketList));
+    }
+
+    if (
+      !filterIsAll &&
+      !filterIsOneTransfer &&
+      !filterIsTwoTransfers &&
+      !filterIsThreeTransfers &&
+      !filterIsNoTransfers
+    ) {
+      const filtredTickets = filtredTicketList.filter(
+        (ticket) =>
+          ticket.segments[0].stops.length && ticket.segments[1].stops.length === 1
+      );
+
+      const ticketList = filtredTickets.slice(0, 5);
+
+      dispatch(loadFiltredTickets(filtredTickets));
+      dispatch(loadTickets(ticketList));
+    }
+
+    if (
+      !filterIsAll &&
+      filterIsNoTransfers &&
+      filterIsTwoTransfers &&
+      filterIsThreeTransfers
+    ) {
+      const ticketList = originTicketList.slice(0, 5);
+      dispatch(loadFiltredTickets(originTicketList));
+      dispatch(loadTickets(ticketList));
+    }
+  };
+
+  const onChangeTwo = () => {
+    if (
+      !filterIsAll &&
+      !filterIsNoTransfers &&
+      !filterIsOneTransfer &&
+      !filterIsThreeTransfers
+    ) {
+      dispatch(loadTickets());
+      dispatch(loadFiltredTickets(originTicketList));
+    }
+
+    if (
+      !filterIsAll &&
+      !filterIsOneTransfer &&
+      !filterIsTwoTransfers &&
+      !filterIsThreeTransfers &&
+      !filterIsNoTransfers
+    ) {
+      const filtredTickets = filtredTicketList.filter(
+        (ticket) =>
+          ticket.segments[0].stops.length && ticket.segments[1].stops.length === 2
+      );
+
+      const ticketList = filtredTickets.slice(0, 5);
+
+      dispatch(loadFiltredTickets(filtredTickets));
+      dispatch(loadTickets(ticketList));
+    }
+
+    if (
+      !filterIsAll &&
+      filterIsNoTransfers &&
+      filterIsOneTransfer &&
+      filterIsThreeTransfers
+    ) {
+      const ticketList = originTicketList.slice(0, 5);
+      dispatch(loadFiltredTickets(originTicketList));
+      dispatch(loadTickets(ticketList));
+    }
+  };
+
+  const onChangeThree = () => {
+    if (
+      !filterIsAll &&
+      !filterIsNoTransfers &&
+      !filterIsOneTransfer &&
+      !filterIsTwoTransfers
+    ) {
+      dispatch(loadTickets());
+      dispatch(loadFiltredTickets(originTicketList));
+    }
+
+    if (
+      !filterIsAll &&
+      !filterIsOneTransfer &&
+      !filterIsTwoTransfers &&
+      !filterIsThreeTransfers &&
+      !filterIsNoTransfers
+    ) {
+      const filtredTickets = filtredTicketList.filter(
+        (ticket) =>
+          ticket.segments[0].stops.length && ticket.segments[1].stops.length === 3
+      );
+
+      const ticketList = filtredTickets.slice(0, 5);
+
+      dispatch(loadFiltredTickets(filtredTickets));
+      dispatch(loadTickets(ticketList));
+    }
+
+    if (
+      !filterIsAll &&
+      filterIsNoTransfers &&
+      filterIsOneTransfer &&
+      filterIsTwoTransfers
+    ) {
+      const ticketList = originTicketList.slice(0, 5);
+      dispatch(loadFiltredTickets(originTicketList));
+      dispatch(loadTickets(ticketList));
     }
   };
 
   const onChangeTransfers = (e) => {
     const checkboxID = e.target.id;
+
     dispatch(filterTransfers(checkboxID, e));
   };
 
@@ -68,6 +242,7 @@ export default function TransferFilter() {
               className={styles["TransferFilter-checkbox"]}
               type="checkbox"
               onChange={onChangeTransfers}
+              onChangeCapture={onChangeZero}
               checked={filterIsNoTransfers}
             />
             <span>Без пересадок</span>
@@ -80,6 +255,7 @@ export default function TransferFilter() {
               className={styles["TransferFilter-checkbox"]}
               type="checkbox"
               onChange={onChangeTransfers}
+              onChangeCapture={onChangeOne}
               checked={filterIsOneTransfer}
             />
             <span>1 пересадка</span>
@@ -92,6 +268,7 @@ export default function TransferFilter() {
               className={styles["TransferFilter-checkbox"]}
               type="checkbox"
               onChange={onChangeTransfers}
+              onChangeCapture={onChangeTwo}
               checked={filterIsTwoTransfers}
             />
             <span>2 пересадки</span>
@@ -104,6 +281,7 @@ export default function TransferFilter() {
               className={styles["TransferFilter-checkbox"]}
               type="checkbox"
               onChange={onChangeTransfers}
+              onChangeCapture={onChangeThree}
               checked={filterIsThreeTransfers}
             />
             <span>3 пересадки</span>

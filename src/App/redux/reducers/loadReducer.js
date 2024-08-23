@@ -2,6 +2,7 @@
 import {
   LOAD_SEARCH_ID,
   LOAD_TICKETS,
+  LOAD_ORIGIN_TICKETS,
   LOAD_FILTRED_TICKETS,
   GET_ERROR,
   LOAD_MORE_TICKETS,
@@ -10,8 +11,9 @@ import {
 
 const initialState = {
   searchID: "",
-  ticketList: [],
+  originTicketList: [],
   filtredTicketList: [],
+  ticketList: [],
   isLoading: false,
   hasError: false,
 };
@@ -21,14 +23,17 @@ export default function loadReducer(state = initialState, action = undefined) {
     case LOAD_SEARCH_ID: // загрузка айди поиска
       return { ...state, searchID: action.payload.searchID };
 
-    case LOAD_TICKETS: // загрузка тикетов
+    case LOAD_TICKETS: // отображение 5 тикетов
       return { ...state, ticketList: action.payload.ticketList };
 
-    case LOAD_FILTRED_TICKETS: // отображение только 5 отфильтрованных тикетов
+    case LOAD_ORIGIN_TICKETS: // загрузка тикетов
+      return { ...state, originTicketList: action.payload.originTickets };
+
+    case LOAD_FILTRED_TICKETS: // фильтрация тикетов от originTickets
       return { ...state, filtredTicketList: action.payload.filtredTickets };
 
     case LOAD_MORE_TICKETS:
-      return { ...state, filtredTicketList: action.payload.updatedTickets };
+      return { ...state, ticketList: action.payload.updatedTickets };
 
     case SET_LOADING:
       return { ...state, isLoading: action.payload.isLoading };

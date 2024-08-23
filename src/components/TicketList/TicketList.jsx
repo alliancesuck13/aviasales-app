@@ -12,11 +12,11 @@ import styles from "./TicketList.module.scss";
 
 export default function TicketList() {
   const allTickets = useSelector((state) => {
-    return state.loadReducer.ticketList;
+    return state.loadReducer.filtredTicketList;
   });
 
   let ticketList = useSelector((state) => {
-    return state.loadReducer.filtredTicketList;
+    return state.loadReducer.ticketList;
   });
 
   const isLoading = useSelector((state) => {

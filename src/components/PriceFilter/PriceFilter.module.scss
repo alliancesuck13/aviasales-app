@@ -45,4 +45,16 @@
   &-selected:hover {
     background-color: $primary-button;
   }
+
+  @media (width < 512px) {
+    &-half-rounded-first {
+      border-radius: 0;
+      border-right: none;
+    }
+
+    &-half-rounded-last {
+      border-radius: 0;
+      border-left: none;
+    }
+  }
 }

@@ -104,9 +104,15 @@ export default function TicketList() {
     />
   ) : (
     <Error hasConnectionError={hasConnectionError} ticketList={tickets}>
-      <button className={styles["TicketList-button"]} type="button" onClick={loadTickets}>
-        Показать еще 5 билетов
-      </button>
+      {ticketList.length === allTickets.length ? null : (
+        <button
+          className={styles["TicketList-button"]}
+          type="button"
+          onClick={loadTickets}
+        >
+          Показать еще 5 билетов
+        </button>
+      )}
     </Error>
   );
 

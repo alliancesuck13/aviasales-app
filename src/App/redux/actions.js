@@ -1,9 +1,10 @@
-export const LOAD_SEARCH_ID = "LOAD_SEARCH_ID";
+import AviasalesService from "../../services/AviasalesService";
+
+export const LOAD_TICKETS_REQUESTED = "LOAD_TICKETS_REQUESTED";
+export const LOAD_TICKETS_SUCCESS = "LOAD_TICKETS_SUCCESS";
 export const LOAD_TICKETS = "LOAD_TICKETS";
-export const LOAD_ORIGIN_TICKETS = "LOAD_ORIGIN_TICKETS";
 export const LOAD_FILTRED_TICKETS = "LOAD_FILTRED_TICKETS";
 export const LOAD_MORE_TICKETS = "LOAD_MORE_TICKETS";
-export const SET_LOADING = "SET_LOADING";
 export const GET_ERROR = "GET_ERROR";
 
 export const FILTER_ALL = "FILTER_ALL";
@@ -17,16 +18,57 @@ export const FILTER_CHEAPEST = "FILTER_CHEAPEST";
 export const FILTER_FASTEST = "FILTER_FASTEST";
 export const FILTER_OPTIMAL = "FILTER_OPTIMAL";
 
-export function loadSearchID(searchID = "") {
-  return { type: LOAD_SEARCH_ID, payload: { searchID } };
+export function loadTicketsRequested() {
+  return { type: LOAD_TICKETS_REQUESTED };
+}
+
+export function loadTicketsSuccess(
+  ticketList = [],
+  originTickets = [],
+  filtredTickets = []
+) {
+  return { type: LOAD_TICKETS_SUCCESS, ticketList, originTickets, filtredTickets };
+}
+
+export function loadAsyncTickets() {
+  const service = new AviasalesService();
+  return (dispatch) => {
+    dispatch(loadTicketsRequested());
+
+    service
+      .getSearchID()
+      .then((response) => {
+        const searchID = response.searchId;
+
+        service
+          .getTickets(searchID)
+          .then((tickets) => {
+            const originTickets = tickets;
+
+            const ticketList = originTickets.slice(0, 5);
+
+            dispatch(loadTicketsSuccess(ticketList, originTickets, originTickets));
+
+            return ticketList;
+          })
+          .catch(() => {
+            dispatch(catchError());
+
+            return null;
+          });
+
+        return searchID;
+      })
+      .catch(() => {
+        dispatch(catchError());
+
+        return null;
+      });
+  };
 }
 
 export function loadTickets(ticketList = []) {
   return { type: LOAD_TICKETS, payload: { ticketList } };
-}
-
-export function loadOriginTickets(originTickets = []) {
-  return { type: LOAD_ORIGIN_TICKETS, payload: { originTickets } };
 }
 
 export function loadFiltredTickets(filtredTickets = []) {
@@ -37,12 +79,8 @@ export function loadMoreTickets(updatedTickets = []) {
   return { type: LOAD_MORE_TICKETS, payload: { updatedTickets } };
 }
 
-export function setLoading(isLoading = false) {
-  return { type: SET_LOADING, payload: { isLoading } };
-}
-
-export function catchError(hasError = false) {
-  return { type: GET_ERROR, payload: { hasError } };
+export function catchError() {
+  return { type: GET_ERROR };
 }
 
 export function filterAll() {

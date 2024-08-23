@@ -1,12 +1,11 @@
 /* eslint-disable indent */
 import {
-  LOAD_SEARCH_ID,
-  LOAD_TICKETS,
-  LOAD_ORIGIN_TICKETS,
-  LOAD_FILTRED_TICKETS,
+  LOAD_TICKETS_REQUESTED,
+  LOAD_TICKETS_SUCCESS,
   GET_ERROR,
   LOAD_MORE_TICKETS,
-  SET_LOADING,
+  LOAD_TICKETS,
+  LOAD_FILTRED_TICKETS,
 } from "../actions";
 
 const initialState = {
@@ -20,14 +19,20 @@ const initialState = {
 
 export default function loadReducer(state = initialState, action = undefined) {
   switch (action.type) {
-    case LOAD_SEARCH_ID: // загрузка айди поиска
-      return { ...state, searchID: action.payload.searchID };
+    case LOAD_TICKETS_REQUESTED: // загрузка айди поиска
+      return { ...state, isLoading: true };
+
+    case LOAD_TICKETS_SUCCESS: // отображение 5 тикетов
+      return {
+        ...state,
+        ticketList: action.ticketList,
+        originTicketList: action.originTickets,
+        filtredTicketList: action.filtredTickets,
+        isLoading: false,
+      };
 
     case LOAD_TICKETS: // отображение 5 тикетов
       return { ...state, ticketList: action.payload.ticketList };
-
-    case LOAD_ORIGIN_TICKETS: // загрузка тикетов
-      return { ...state, originTicketList: action.payload.originTickets };
 
     case LOAD_FILTRED_TICKETS: // фильтрация тикетов от originTickets
       return { ...state, filtredTicketList: action.payload.filtredTickets };
@@ -35,11 +40,8 @@ export default function loadReducer(state = initialState, action = undefined) {
     case LOAD_MORE_TICKETS:
       return { ...state, ticketList: action.payload.updatedTickets };
 
-    case SET_LOADING:
-      return { ...state, isLoading: action.payload.isLoading };
-
     case GET_ERROR: // ошибка загрузки
-      return { ...state, hasError: action.payload.hasError };
+      return { ...state, hasError: true, isLoading: false };
 
     default:
       return state;

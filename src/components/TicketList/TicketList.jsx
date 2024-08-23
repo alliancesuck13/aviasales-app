@@ -118,7 +118,7 @@ export default function TicketList() {
 
   return (
     <>
-      <ul>{tickets}</ul>
+      <ul>{!hasConnectionError && tickets}</ul>
       {loading}
     </>
   );

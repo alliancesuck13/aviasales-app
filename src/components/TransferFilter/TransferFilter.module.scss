@@ -41,22 +41,46 @@
     background-color: $hover;
   }
 
-  &-checkbox {
-    cursor: pointer;
+  label {
+    display: flex;
+    align-items: center;
 
-    margin-right: 10px;
+    input {
+      opacity: 0;
+      position: absolute;
+      z-index: -1;
+    }
 
-    width: 20px;
-    height: 20px;
-    border: 1px solid #9abbce;
-  }
+    .TransferFilter-checkbox--illusion {
+      cursor: pointer;
+      margin-right: 10px;
+      width: 20px;
+      height: 20px;
+      background-repeat: no-repeat;
+      background-position: center;
 
-  &-checkbox:checked {
-    border-color: #2196f3;
-  }
+      &::before {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-image: url("../../assets/img/checkbox--empty.svg");
+        background-size: contain;
+      }
+    }
 
-  &-checkbox:not(:checked) {
-    border-color: #9abbce;
+    input:checked + .TransferFilter-checkbox--illusion::before {
+      background-image: url("../../assets/img/checkbox--checked.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+    }
+
+    input:focus + .TransferFilter-checkbox--illusion {
+      border-radius: 2px;
+      outline: 2px solid #2196f3;
+      outline-offset: -2px;
+    }
   }
 
   @media (width < 768px) {

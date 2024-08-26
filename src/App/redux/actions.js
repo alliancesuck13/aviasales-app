@@ -42,8 +42,8 @@ export function loadAsyncTickets() {
 
         service
           .getTickets(searchID)
-          .then((tickets) => {
-            const originTickets = tickets;
+          .then((result) => {
+            const originTickets = result.tickets;
 
             const ticketList = originTickets.slice(0, 5);
 

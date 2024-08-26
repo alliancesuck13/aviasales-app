@@ -28,7 +28,7 @@ export default class AviasalesService {
 
   getTickets(searchID = "") {
     return this.getResource(`tickets?searchId=${searchID}`)
-      .then((response) => response.tickets)
+      .then((response) => response)
       .catch((reason) => reason);
   }
 }

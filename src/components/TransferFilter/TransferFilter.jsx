@@ -232,6 +232,7 @@ export default function TransferFilter() {
               onChange={onChangeAll}
               checked={filterIsAll}
             />
+            <span className={styles["TransferFilter-checkbox--illusion"]}></span>
             <span>Все</span>
           </label>
         </li>
@@ -245,6 +246,7 @@ export default function TransferFilter() {
               onChangeCapture={onChangeZero}
               checked={filterIsNoTransfers}
             />
+            <span className={styles["TransferFilter-checkbox--illusion"]}></span>
             <span>Без пересадок</span>
           </label>
         </li>
@@ -258,6 +260,7 @@ export default function TransferFilter() {
               onChangeCapture={onChangeOne}
               checked={filterIsOneTransfer}
             />
+            <span className={styles["TransferFilter-checkbox--illusion"]}></span>
             <span>1 пересадка</span>
           </label>
         </li>
@@ -271,6 +274,7 @@ export default function TransferFilter() {
               onChangeCapture={onChangeTwo}
               checked={filterIsTwoTransfers}
             />
+            <span className={styles["TransferFilter-checkbox--illusion"]}></span>
             <span>2 пересадки</span>
           </label>
         </li>
@@ -284,6 +288,7 @@ export default function TransferFilter() {
               onChangeCapture={onChangeThree}
               checked={filterIsThreeTransfers}
             />
+            <span className={styles["TransferFilter-checkbox--illusion"]}></span>
             <span>3 пересадки</span>
           </label>
         </li>

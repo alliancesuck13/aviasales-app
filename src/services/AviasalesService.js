@@ -26,7 +26,7 @@ export default class AviasalesService {
       .catch((reason) => reason);
   }
 
-  getTickets(searchID = "") {
+  getPacketOfTickets(searchID = "") {
     return this.getResource(`tickets?searchId=${searchID}`)
       .then((response) => response)
       .catch((reason) => reason);

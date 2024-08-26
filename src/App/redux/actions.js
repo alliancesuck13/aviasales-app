@@ -1,5 +1,7 @@
 import AviasalesService from "../../services/AviasalesService";
 
+export const DISABLE_LOADING = "DISABLE_LOADING";
+export const LOAD_ALL_TICKETS = "LOAD_ALL_TICKETS";
 export const LOAD_TICKETS_REQUESTED = "LOAD_TICKETS_REQUESTED";
 export const LOAD_TICKETS_SUCCESS = "LOAD_TICKETS_SUCCESS";
 export const LOAD_TICKETS = "LOAD_TICKETS";
@@ -18,6 +20,10 @@ export const FILTER_CHEAPEST = "FILTER_CHEAPEST";
 export const FILTER_FASTEST = "FILTER_FASTEST";
 export const FILTER_OPTIMAL = "FILTER_OPTIMAL";
 
+export function disableLoading() {
+  return { type: DISABLE_LOADING };
+}
+
 export function loadTicketsRequested() {
   return { type: LOAD_TICKETS_REQUESTED };
 }
@@ -28,6 +34,10 @@ export function loadTicketsSuccess(
   filtredTickets = []
 ) {
   return { type: LOAD_TICKETS_SUCCESS, ticketList, originTickets, filtredTickets };
+}
+
+export function loadAllTickets(originTickets = [], filtredTickets = []) {
+  return { type: LOAD_ALL_TICKETS, originTickets, filtredTickets };
 }
 
 export function loadAsyncTickets() {
@@ -41,7 +51,7 @@ export function loadAsyncTickets() {
         const searchID = response.searchId;
 
         service
-          .getTickets(searchID)
+          .getPacketOfTickets(searchID)
           .then((result) => {
             const originTickets = result.tickets;
 
@@ -56,6 +66,19 @@ export function loadAsyncTickets() {
 
             return null;
           });
+
+        const timer = setInterval(() => {
+          service
+            .getPacketOfTickets(searchID)
+            .then((result) => {
+              if (result.stop) {
+                dispatch(disableLoading());
+                clearInterval(timer);
+              }
+              dispatch(loadAllTickets(result.tickets, result.tickets));
+            })
+            .catch((error) => error);
+        }, 400);
 
         return searchID;
       })

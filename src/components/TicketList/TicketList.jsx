@@ -88,38 +88,35 @@ export default function TicketList() {
     dispatch(loadMoreTickets(updatedTickets));
   };
 
-  const loading = isLoading ? (
-    <ThreeDots
-      visible
-      height="70"
-      width="70"
-      color="#2196f3"
-      radius="1"
-      ariaLabel="three-dots-loading"
-      wrapperStyle={{
-        display: "inline-block",
-        marginLeft: "auto",
-        marginRight: "auto",
-      }}
-    />
-  ) : (
-    <Error hasConnectionError={hasConnectionError} ticketList={tickets}>
-      {ticketList.length === allTickets.length ? null : (
-        <button
-          className={styles["TicketList-button"]}
-          type="button"
-          onClick={loadTickets}
-        >
-          Показать еще 5 билетов
-        </button>
-      )}
-    </Error>
-  );
-
   return (
     <>
+      {isLoading && (
+        <ThreeDots
+          visible
+          height="70"
+          width="70"
+          color="#2196f3"
+          radius="1"
+          ariaLabel="three-dots-loading"
+          wrapperStyle={{
+            display: "inline-block",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        />
+      )}
       <ul>{!hasConnectionError && tickets}</ul>
-      {loading}
+      <Error hasConnectionError={hasConnectionError} ticketList={tickets}>
+        {ticketList.length === allTickets.length ? null : (
+          <button
+            className={styles["TicketList-button"]}
+            type="button"
+            onClick={loadTickets}
+          >
+            Показать еще 5 билетов
+          </button>
+        )}
+      </Error>
     </>
   );
 }
